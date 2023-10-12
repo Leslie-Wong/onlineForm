@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-wrap px-4">
         <div class="flex-auto max-w-2xl text-center p-4 mx-auto bg-white md:rounded-md md:shadow-md">
-            Thank You. Your information has been saved.
+            {{__('Thank You. Your information has been saved.')}}'
         </div>
     </div>
 </template>

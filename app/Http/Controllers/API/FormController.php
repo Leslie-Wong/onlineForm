@@ -138,7 +138,7 @@ class FormController  extends Controller
         }
 
         $form = $this->repo::store(json_decode(collect($request->all())));
-        return $this->api->success()->message('Form Created')->payload($form)->send();
+        return $this->api->success()->message("Thank You. Your information has been saved.")->payload($form)->send();
 
         // return $this->api->success()->message("Form has been updated")->payload($request->data)->code(200)->send();
     }
