@@ -4,8 +4,8 @@
         v-model="tab"
         bg-color="primary"
         >
-        <v-tab value="one">Input Form</v-tab>
-        <v-tab value="two">Batch Upload</v-tab>
+        <v-tab value="one">{{__('Input Form')}}</v-tab>
+        <v-tab value="two">{{__('Batch Upload')}}</v-tab>
         </v-tabs>
 
         <v-card-text>
@@ -183,6 +183,7 @@
                                 type="file"
                                 id="product_image"
                                 name="product_image"
+                                accept="image/*" 
                                 @input="
                                 this.form.form_attributes[index].product_image = $event.target.files[0]
                                 "
@@ -214,7 +215,7 @@
 
                 <v-window-item value="two">
 
-                    <v-file-input v-model="fileUpload" accept=".xlsx,.xls" @change="handleFilesUpload" clearable label="File input" variant="solo"></v-file-input>
+                    <v-file-input v-model="fileUpload" accept=".xlsx,.xls" @change="handleFilesUpload" clearable :label="__('File input')" variant="solo"></v-file-input>
                     <v-expansion-panels>
                         <v-expansion-panel
                           :title="this.__('Tips')"
@@ -241,7 +242,7 @@
             </v-window>
         </v-card-text>
     </v-card>
-    <jet-dialog-modal title="Preview Upload File" :show="previewFile">
+    <jet-dialog-modal :title="__('Preview Upload File')" :show="previewFile">
         <template v-slot:content>
             <div class="overflow-y-scroll">
                 <table>
@@ -610,12 +611,16 @@
         },
 
         async handleFilesUpload(e) {
+            
+            this.overlay = true;
             let uploadedFiles = e.target.files[0];
 
             const result = await this.readXLSX(uploadedFiles)
             console.log(result)
             this.files = result;
             this.previewFile = true;
+            
+            this.overlay = false;
             return false
         },
         removeFile(key) {

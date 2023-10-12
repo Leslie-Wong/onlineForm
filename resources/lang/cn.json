@@ -196,5 +196,12 @@
     "Brand": "Brand",
     "Ref Price": "Ref Price",
     "Place Of Origin": "Place Of Origin",
-    "Product Image": "Product Image"
+    "Product Image": "Product Image",
+    "Input Form":"Input Form",
+    "Batch Upload":"Batch Upload",
+    "File input":"File input",
+    "Tips":"Tips",
+    "The image only support a downloadable url.":"The image only support a downloadable url.",
+    "Preview Upload File":"Preview Upload File",
+    "Download Example File":"Download Example File"
 }

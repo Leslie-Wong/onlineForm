@@ -1,5 +1,5 @@
 {
-	"authHost": "http://192.168.3.158:8000",
+	"authHost": "https://forms.colors.com.hk",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [],
 	"database": "redis",
@@ -15,7 +15,7 @@
 	"protocol": "http",
 	"socketio": {
         "cors": {
-            "origin": ["http://192.168.3.158:8000"],
+            "origin": ["https://forms.colors.com.hk"],
             "methods": ["GET", "POST"],
             "allowedHeaders": ["Origin", "Content-Type", "X-Auth-Token", "X-Requested-With", "Accept", "Authorization", "X-CSRF-TOKEN", "X-Socket-Id"],
             "credentials": true
@@ -32,7 +32,7 @@
 	},
 	"apiOriginAllow": {
 		"allowCors": true,
-		"allowOrigin": ["http://192.168.3.158:8000"],
+		"allowOrigin": ["https://forms.colors.com.hk"],
 		"allowMethods": ["GET", "POST"],
 		"allowHeaders": ["Origin", "Content-Type", "X-Auth-Token", "X-Requested-With", "Accept", "Authorization", "X-CSRF-TOKEN", "X-Socket-Id"],
         "credentials": true

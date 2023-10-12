@@ -34,6 +34,7 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::get('/forms', [\App\Http\Controllers\FormController::class,"index"])->name("forms.index");
 Route::get('/forms/index', [\App\Http\Controllers\FormController::class,"index"])->name("forms.index");
 Route::post('/forms/store', [\App\Http\Controllers\FormController::class,"store"])->name("forms.store");
 Route::get('/forms/finish', [\App\Http\Controllers\FormController::class,"finish"])->name("forms.finish");

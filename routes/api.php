@@ -63,12 +63,14 @@ Route::group(["middleware"=>['auth:sanctum', 'verified'],'as' => 'api.'], functi
 
 
 /* Auto-generated product-types api routes */
-Route::group(['as' => 'api.'], function () {
+Route::group(["middleware"=>['auth:sanctum', 'verified'], 'as' => 'api.'], function () {
     Route::get('/product-types/dt', [\App\Http\Controllers\API\ProductTypeController::class,'dt'])->name('product-types.dt');
     Route::apiResource('/product-types', \App\Http\Controllers\API\ProductTypeController::class)->parameters(["product-types" => "productType"]);
 });
 
-
+Route::group(['as' => 'api.'], function () {
+    Route::apiResource('/product-types', \App\Http\Controllers\API\ProductTypeController::class)->parameters(["product-types" => "productType"]);
+});
 
 
 /* Auto-generated forms api routes */
