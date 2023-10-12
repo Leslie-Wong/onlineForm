@@ -10,7 +10,18 @@ Route::get('language/{language}', function ($language) {
 })->name('language');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/admin', function () {
-    return Inertia::render('AdminDashboard');
+    
+    if(\Auth::guard('admin')->user()){
+        return Inertia::render('AdminDashboard');
+    }else{
+        // return redirect('admin/gen-quotation-logs');
+        foreach (\Auth::user()->roles->map->name as $name) {
+            if(strpos($name,"admin") !== false){
+                return Inertia::render('AdminDashboard');
+            }
+        }
+    }
+    return redirect('/');
 })->name('admin.dashboard');
 
 
