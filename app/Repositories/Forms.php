@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\Form;
+use App\Models\FormAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
@@ -31,9 +32,9 @@ class Forms
 
         $model->saveOrFail();
 
-        /*-----Auot Gen Create-form_attributes-Start-----*/
-        if (isset($data->form_attributes)) {
-            foreach ($data->form_attributes as $child) {
+        /*-----Auot Gen Create-form_attributess-Start-----*/
+        if (isset($data->form_attributess)) {
+            foreach ($data->form_attributess as $child) {
                 \Log::info(json_encode($child));
                 if( auth('sanctum')->check() ){
                     $user = auth('sanctum')->user();
@@ -46,7 +47,7 @@ class Forms
             }
 
         }
-        /*-----Auot Gen Create-form_attributes-End-----*/
+        /*-----Auot Gen Create-form_attributess-End-----*/
         return $model;
     }
 
@@ -62,9 +63,9 @@ class Forms
         // Save Relationships
 
 
-        /*-----Auot Gen Update-form_attributes-Start-----*/
-        if (isset($data->form_attributes)) {
-            foreach ($data->form_attributes as $child) {
+        /*-----Auot Gen Update-form_attributess-Start-----*/
+        if (isset($data->form_attributess)) {
+            foreach ($data->form_attributess as $child) {
                 if(isset($child->id)){
                     $id = explode("@", OpensslHelper::decrypt($child->id));
                     $child->id = $id[0];
@@ -77,7 +78,7 @@ class Forms
             }
 
         }
-        /*-----Auot Gen Update-form_attributes-End-----*/
+        /*-----Auot Gen Update-form_attributess-End-----*/
 
         $this->model->saveOrFail();
         return $this->model;
@@ -91,28 +92,29 @@ class Forms
 
     public static function dtColumns() {
         $columns = [
-            Column::make('id')->title('ID')->className('all text-right')->type("num"),
-            Column::make("name")->className('all')->type("string"),
-            Column::make("status")->className('min-tablet')->type("ENUM")->content(json_encode(['options' => ['Enable','Disable']])),
+            // Column::make('id')->title('ID')->className('all text-right')->type("num"),
+            // Column::make("name")->className('all')->type("string"),
+            // Column::make("status")->className('min-tablet')->type("ENUM")->content(json_encode(['options' => ['Enable','Disable']])),
         ];
 
 
         $child_columns = [
-            Column::make("form_attribute.name")->title('Name')->className('all')->type("string"),
-            Column::make("form_attribute.phone")->title('Phone')->className('min-tablet')->type("string"),
-            Column::make("form_attribute.email")->title('Email')->className('min-tablet')->type("string"),
-            Column::make("form_attribute.product_sku")->title('ProductSku')->className('min-tablet')->type("string"),
-            Column::make("form_attribute.product_name")->title('ProductName')->className('min-tablet')->type("string"),
-            Column::make("form_attribute.product_type")->title('ProductType')->className('min-tablet')->type("string"),
-            Column::make("form_attribute.brand")->title('Brand')->className('min-tablet')->type("string"),
-            Column::make("form_attribute.ref_price")->title('RefPrice')->className('min-tablet')->type("string"),
-            Column::make("form_attribute.place_of_origin")->title('PlaceOfOrigin')->className('min-tablet')->type("string"),
-            Column::make("form_attribute.product_image")->title('ProductImage')->className('min-tablet')->type("string"),
+            
+            Column::make("product_sku")->title('ProductSku')->className('min-tablet')->type("string"),
+            Column::make("product_name")->title('ProductName')->className('min-tablet')->type("string"),
+            Column::make("product_type")->title('ProductType')->className('min-tablet')->type("string"),
+            Column::make("brand")->title('Brand')->className('min-tablet')->type("string"),
+            Column::make("ref_price")->title('RefPrice')->className('min-tablet')->type("string"),
+            Column::make("place_of_origin")->title('PlaceOfOrigin')->className('min-tablet')->type("string"),
+            Column::make("product_image")->title('ProductImage')->className('min-tablet')->type("string"),
+            Column::make("name")->title('Name')->className('all')->type("string"),
+            // Column::make("phone")->title('Phone')->className('min-tablet')->type("string"),
+            // Column::make("email")->title('Email')->className('min-tablet')->type("string"),
         ];
 
         $exheader = [
-            ["name" => "Forms", "len" => 4],
-            ["name" => "Form Attributes", "len" => 10],
+            // ["name" => "Forms", "len" => 4],
+            // ["name" => "Form Attributes", "len" => 10],
         ];
 
         $columns = array_merge($columns, $child_columns);
@@ -127,27 +129,24 @@ class Forms
     }
 
     public static function dt($query, $request) {
-        $query = $query->with([
-            'FormAttribute',
-        ]);
+        // $query = $query->with([
+        //     'FormAttributes',
+        // ]);
 
         $childColumns = [
-            'form_attribute.name',
-            'form_attribute.phone',
-            'form_attribute.email',
-            'form_attribute.product_sku',
-            'form_attribute.product_name',
-            'form_attribute.product_type',
-            'form_attribute.brand',
-            'form_attribute.ref_price',
-            'form_attribute.place_of_origin',
-            'form_attribute.product_image',
+            'product_sku',
+            'product_name',
+            'product_type',
+            'brand',
+            'ref_price',
+            'place_of_origin',
+            'product_image',
+            'name',
+            // 'phone',
+            // 'email',
         ];
 
         $allowedColumns = [
-            'id',
-            'name',
-            'status',
             'created_at',
             'updated_at',
             ...$childColumns,
@@ -159,7 +158,7 @@ class Forms
         $dataTable = DataTables::of($query);
 
 
-        return DataTables::of($query)->editColumn('actions',function (Form $model) {
+        return DataTables::of($query)->editColumn('actions',function (FormAttribute $model) {
             $actions = '';
             if (\Auth::user()->can('view',$model)) $actions .= '<button class="bg-primary hover:bg-primary-600 p-2 px-3 focus:ring-0 focus:outline-none text-green-500 action-button" title="__("View Details")" data-action="show-model" data-tag="button" data-id="'.$model->slug().'"><i class="fas fa-eye"></i></button>';
             if (\Auth::user()->can('update',$model)) $actions .= '<button class="bg-secondary hover:bg-secondary-600 p-2 px-3 focus:ring-0 focus:outline-none text-orange-500 action-button" title="__("Edit Record")" data-action="edit-model" data-tag="button" data-id="'.$model->slug().'"><i class="fas fa-edit"></i></button>';

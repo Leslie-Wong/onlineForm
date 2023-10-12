@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\API;
 use App\Models\Form;
+use App\Models\FormAttribute;
 use App\Repositories\Forms;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -44,7 +45,7 @@ class FormController  extends Controller
     }
 
     public function dt(Request $request) {
-        $query = Form::query()->select(Form::getModel()->getTable().'.*'); // You can extend this however you want.
+        $query = FormAttribute::query()->select(FormAttribute::getModel()->getTable().'.*'); // You can extend this however you want.
         return $this->repo::dt($query, $request);
     }
     /**
