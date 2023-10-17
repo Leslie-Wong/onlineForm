@@ -138,17 +138,17 @@ class FormController  extends Controller
         }
 
         foreach($request->files as $files_key => $files){
-           
+
             if(is_array($files)){
-                
+
                 foreach($request->file($files_key) as $idx => $val){
                     $fileName = time()."-".$val->getClientOriginalName();
-                    $val->move(public_path('upload/Form/upload/'.$files_key.'/'.$idx), $fileName);
+                    $val->move(public_path('uploads/forms/upload-file/files/'.$files_key.'/'.$idx), $fileName);
                 }
             }else{
                 $fileName = time()."-".$request->file($files_key)->getClientOriginalName();
-                $request->file($files_key)->move(public_path('upload/Form/upload'), $fileName);
-                // $data->{$files_key} = '/upload/Form/'.$fileName;
+                $request->file($files_key)->move(public_path('uploads/forms/upload-file/files'), $fileName);
+                // $data->{$files_key} = '/uploads/forms/upload-file/images/'.$fileName;
             }
         }
 

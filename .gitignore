@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor
+.env
 .env.backup
 .phpunit.result.cache
 Homestead.json
@@ -15,3 +16,8 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/storage
+/public/upload
+/storage/framework/*
+storage/framework/*
+storage/logs/laravel.log

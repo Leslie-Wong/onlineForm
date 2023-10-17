@@ -10,7 +10,7 @@ Route::get('language/{language}', function ($language) {
 })->name('language');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/admin', function () {
-    
+
     if(\Auth::guard('admin')->user()){
         return Inertia::render('AdminDashboard');
     }else{
@@ -68,6 +68,7 @@ Route::group(["prefix" => "admin","as" => "admin.","middleware"=>['auth:sanctum'
 Route::group(["prefix" => "admin","as" => "admin.","middleware"=>['auth:sanctum', 'verified']], function () {
     Route::resource('forms', \App\Http\Controllers\Admin\FormController::class)->parameters(["forms" => "form"]);
     Route::delete('forms.children.destroy', [\App\Http\Controllers\Admin\FormController::class,"destroyChild"])->name("forms.children.destroy");
+    Route::get('forms/export/excel', [\App\Http\Controllers\Admin\FormController::class,"exportExcel"])->name("forms.export.excel");
 });
 
 

@@ -183,7 +183,7 @@
                                 type="file"
                                 id="product_image"
                                 name="product_image"
-                                accept="image/*" 
+                                accept="image/*"
                                 @input="
                                 this.form.form_attributes[index].product_image = $event.target.files[0]
                                 "
@@ -385,8 +385,30 @@
     border-color: #d7e0e0;
     padding: 5px;
     white-space: nowrap;
+    max-width: 400px;
+    overflow-x: auto;
+  }
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #c9c9c9 #ffffff;
   }
 
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    height: 9px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #f0f0f0;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #c9c9c9;
+    border-radius: 10px;
+    border: 0px none #ffffff;
+  }
   </style>
   <script>
   import JetInput from "@/Jetstream/Input.vue";
@@ -464,7 +486,7 @@
             const vm = this;
             this.previewFile = false;
             this.overlay = true;
-            axios.post(this.route("api.forms.data.upload"), 
+            axios.post(this.route("api.forms.data.upload"),
                     {
                         "form_attributes": this.files,
                         "files": this.uploadedFile,
@@ -481,12 +503,14 @@
                 vm.overlay = false;
                 vm.$refs.inputForm.reset();
                 vm.fileUpload=null;
+                vm.form.form_attributes[0].product_image = null;
                 vm.$emit("success", vm.__(response.data.message));
             })
             .catch(function (error) {
                 console.log(error);
                 vm.overlay = false;
                 vm.fileUpload=null;
+                vm.form.form_attributes[0].product_image = null;
                 vm.$emit("error", vm.__(error));
             });
         },
@@ -598,6 +622,7 @@
                     if (this.flash.success) {
                         this.fileUpload=null;
                         this.$refs.inputForm.reset();
+                        this.form.form_attributes[0].product_image = null;
                         this.$emit("success", this.__(this.flash.success));
                     } else if (this.flash.error) {
                         this.$emit("error", this.__(this.flash.error));
@@ -621,7 +646,7 @@
         },
 
         async handleFilesUpload(e) {
-            
+
             this.overlay = true;
             this.uploadedFile = e.target.files;
 
@@ -629,7 +654,7 @@
             console.log(result)
             this.files = result;
             this.previewFile = true;
-            
+
             this.overlay = false;
             return false
         },

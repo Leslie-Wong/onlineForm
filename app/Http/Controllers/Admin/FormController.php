@@ -1,17 +1,21 @@
 <?php
 namespace App\Http\Controllers\Admin;
+use App\Models\Form;
+use Inertia\Inertia;
+use App\Repositories\Forms;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Helpers\OpensslHelper;
+use Yajra\DataTables\Html\Column;
+use App\Actions\Exports\FormsExport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\Form\IndexForm;
 use App\Http\Requests\Form\StoreForm;
+use Intervention\Image\Facades\Image;
 use App\Http\Requests\Form\UpdateForm;
 use App\Http\Requests\Form\DestroyForm;
-use App\Models\Form;
-use App\Repositories\Forms;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Inertia\Inertia;
-use Yajra\DataTables\Html\Column;
-use App\Helpers\OpensslHelper;
+use Illuminate\Support\Facades\Storage;
 
 class FormController  extends Controller
 {
@@ -72,15 +76,28 @@ class FormController  extends Controller
                     foreach($request->file($files_key) as $idx => $val){
                         foreach($val as $_idx => $_val){
                             $fileName = time().'.'.$_val->getClientOriginalExtension();
-                            $_val->move(public_path('upload/Form/'.$files_key.'/'.$_idx), $fileName);
-                            $data->{$files_key}[$idx]->{$_idx} = '/upload/Form/'.$files_key.'/'.$_idx.'/'. $fileName;
+                            $_val->move(public_path('uploads/forms/upload-file/images/'.$files_key.'/'.$_idx), $fileName);
+                            $fileName = 'forms/upload-file/images/'.$files_key.'/'.$_idx.'/'. $fileName;
+                            $data->{$files_key}[$idx]->{$_idx} = '/uploads/'.$fileName;
                         }
                     }
                 }else{
                     $fileName = time().'.'.$request->file($files_key)->getClientOriginalExtension();
-                    $request->file($files_key)->move(public_path('upload/Form'), $fileName);
-                    $data->{$files_key} = '/upload/Form/'.$fileName;
+                    $request->file($files_key)->move(public_path('uploads/forms/upload-file/images/'), $fileName);
+                    $fileName = 'forms/upload-file/images/'.$fileName;
+                    $data->{$files_key} = '/uploads/'.$fileName;
                 }
+
+                $img = Image::make(Storage::disk('public_uploads')->get($fileName));
+
+
+                $img->resize(180, 180, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('jpg',70);
+
+                Storage::disk('public_thumbnails')->put( $fileName , $img);
             }
 
             $form = $this->repo::store($data);
@@ -126,7 +143,7 @@ class FormController  extends Controller
         try {
             $this->authorize('update', $form);
             //Fetch relationships
-            
+
 
 
 
@@ -160,15 +177,26 @@ class FormController  extends Controller
                     foreach($request->file($files_key) as $idx => $val){
                         foreach($val as $_idx => $_val){
                             $fileName = time().'.'.$_val->getClientOriginalExtension();
-                            $_val->move(public_path('upload/Form/'.$files_key.'/'.$_idx), $fileName);
-                            $data->{$files_key}[$idx]->{$_idx} = '/upload/Form/'.$files_key.'/'.$_idx.'/'. $fileName;
+                            $_val->move(public_path('uploads/forms/upload-file/images/'.$files_key.'/'.$_idx), $fileName);
+                            $data->{$files_key}[$idx]->{$_idx} = '/uploads/forms/upload-file/images/'.$files_key.'/'.$_idx.'/'. $fileName;
                         }
                     }
                 }else{
                     $fileName = time().'.'.$request->file($files_key)->getClientOriginalExtension();
-                    $request->file($files_key)->move(public_path('upload/Form'), $fileName);
-                    $data->{$files_key} = '/upload/Form/'.$fileName;
+                    $request->file($files_key)->move(public_path('uploads/forms/upload-file/images/'), $fileName);
+                    $data->{$files_key} = '/uploads/forms/upload-file/images/'.$fileName;
                 }
+
+                $img = Image::make(Storage::disk('public_uploads')->get('forms/upload-file/images/'.$fileName));
+
+
+                $img->resize(180, 180, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('jpg',70);
+
+                Storage::disk('public_thumbnails')->put( 'forms/upload-file/images/'.$fileName , $img);
             }
 
             $res = $this->repo::init($form)->update($data);
@@ -215,6 +243,13 @@ class FormController  extends Controller
         else {
             return back()->with(['error' => "This child could not be deleted."]);
         }
+    }
+
+    public function exportExcel()
+    {
+
+        return Excel::download(new FormsExport, 'formsexport.xlsx');
+
     }
 
 }

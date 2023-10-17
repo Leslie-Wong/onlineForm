@@ -6,6 +6,17 @@
       0 => 'Inertia\\ServiceProvider',
     ),
   ),
+  'intervention/image' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Intervention\\Image\\ImageServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Image' => 'Intervention\\Image\\Facades\\Image',
+    ),
+  ),
   'jenssegers/agent' => 
   array (
     'providers' => 
@@ -75,6 +86,17 @@
       'LaravelJetinGenerator' => 'Lesliew\\LaravelJetinGenerator\\LaravelJetinGeneratorFacade',
     ),
   ),
+  'maatwebsite/excel' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
+    ),
+  ),
   'nesbot/carbon' => 
   array (
     'providers' => 
@@ -94,6 +116,17 @@
     'providers' => 
     array (
       0 => 'Termwind\\Laravel\\TermwindServiceProvider',
+    ),
+  ),
+  'rolandstarke/laravel-thumbnail' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Rolandstarke\\Thumbnail\\ThumbnailServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Thumbnail' => 'Rolandstarke\\Thumbnail\\Facades\\Thumbnail',
     ),
   ),
   'savannabits/laravel-pagetables' => 

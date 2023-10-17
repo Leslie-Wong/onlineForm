@@ -8,6 +8,7 @@ use App\Models\FormAttribute;
 use App\Helpers\OpensslHelper;
 use App\Helpers\SearchBuilder;
 use Yajra\DataTables\Html\Column;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -80,15 +81,30 @@ class Forms
         /*-----Auot Gen Create-form_attributess-Start-----*/
         if (isset($data->form_attributes)) {
             foreach ($data->form_attributes as $child) {
+                \Log::info("data->form_attributes => ", (array) $child);
+                \Log::info("product details => ".$child->{'product details'});
                 if($child->product_image){
                     $extantion = "jpg";
                     $data = self::file_get_contents_curl($child->product_image);
-                    $filename = "upload/Form/uploadFile/images/".uniqid()."." . $extantion;
-                    Storage::disk('public')->put($filename, $data);
-                    // file_put_contents(public_path('upload/Form/uploadFile/images').'/'.uniqid()."." . $extantion, $data);
-                    $child->product_image = '/storage/'.$filename;
+                    $filename = "/forms/upload-file/images/".uniqid()."." . $extantion;
+                    Storage::disk('public_uploads')->put($filename, $data);
+                    $child->product_details = $child->{'product details'};
+                    $child->product_image = '/uploads'.$filename;
+
+                    $img = Image::make(Storage::disk('public_uploads')->get($filename));
+
+                    $destinationPathThumbnail = public_path('/thumbnails');
+
+                    $img->resize(180, 180, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('jpg',70);
+                    // ->save(public_path('/thumbnails'.$filename));
+
+                    Storage::disk('public_thumbnails')->put( $filename, $img);
                 }
-                
+
                 if( auth('sanctum')->check() ){
                     $user = auth('sanctum')->user();
                     $child->name = $user->name;
@@ -152,7 +168,7 @@ class Forms
 
 
         $child_columns = [
-            
+
             Column::make("product_sku")->title('ProductSku')->className('min-tablet')->type("string"),
             Column::make("product_name")->title('ProductName')->className('min-tablet')->type("string"),
             Column::make("product_type")->title('ProductType')->className('min-tablet')->type("string"),
