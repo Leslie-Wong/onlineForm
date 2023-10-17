@@ -564,6 +564,24 @@ return [
             'root' => base_path('resources/lang'),
         ],
 
+        
+	'resources_lang' => [
+            'driver' => 'local',
+            'root' => base_path('resources/lang'),
+        ],
+
+        
+	'resources_lang' => [
+            'driver' => 'local',
+            'root' => base_path('resources/lang'),
+        ],
+
+        
+	'resources_lang' => [
+            'driver' => 'local',
+            'root' => base_path('resources/lang'),
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),

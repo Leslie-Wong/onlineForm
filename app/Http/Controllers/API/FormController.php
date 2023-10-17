@@ -137,7 +137,24 @@ class FormController  extends Controller
             return $this->api->failed()->code(400)->message($validator->messages())->send();
         }
 
-        $form = $this->repo::store(json_decode(collect($request->all())));
+        foreach($request->files as $files_key => $files){
+           
+            if(is_array($files)){
+                
+                foreach($request->file($files_key) as $idx => $val){
+                    $fileName = time()."-".$val->getClientOriginalName();
+                    $val->move(public_path('upload/Form/upload/'.$files_key.'/'.$idx), $fileName);
+                }
+            }else{
+                $fileName = time()."-".$request->file($files_key)->getClientOriginalName();
+                $request->file($files_key)->move(public_path('upload/Form/upload'), $fileName);
+                // $data->{$files_key} = '/upload/Form/'.$fileName;
+            }
+        }
+
+        $form = $this->repo::storeByUpload(json_decode(collect($request->all())));
+
+
         return $this->api->success()->message("Thank You. Your information has been saved.")->payload($form)->send();
 
         // return $this->api->success()->message("Form has been updated")->payload($request->data)->code(200)->send();

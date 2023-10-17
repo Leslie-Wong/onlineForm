@@ -384,6 +384,7 @@
     border-width: 0.5px;
     border-color: #d7e0e0;
     padding: 5px;
+    white-space: nowrap;
   }
 
   </style>
@@ -439,6 +440,7 @@
         previewFile: false,
         tab: null,
         overlay: false,
+        uploadedFile:null,
         files: [],
         fileUpload:null,
         confirmDelete: false,
@@ -462,9 +464,17 @@
             const vm = this;
             this.previewFile = false;
             this.overlay = true;
-            axios.post(this.route("api.forms.data.upload"), {
-                "form_attributes": this.files
-            })
+            axios.post(this.route("api.forms.data.upload"), 
+                    {
+                        "form_attributes": this.files,
+                        "files": this.uploadedFile,
+                    },
+                    {
+                        headers: {
+                        'Content-Type': 'multipart/form-data'
+                        }
+                    }
+            )
             .then(function (response) {
                 console.log(response);
 
@@ -613,9 +623,9 @@
         async handleFilesUpload(e) {
             
             this.overlay = true;
-            let uploadedFiles = e.target.files[0];
+            this.uploadedFile = e.target.files;
 
-            const result = await this.readXLSX(uploadedFiles)
+            const result = await this.readXLSX(this.uploadedFile[0])
             console.log(result)
             this.files = result;
             this.previewFile = true;

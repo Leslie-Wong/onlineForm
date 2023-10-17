@@ -24,6 +24,7 @@ class FormAttribute extends Model
         'ref_price',
         'place_of_origin',
         'product_image',
+        'product_details',
     
     ];
     
@@ -39,6 +40,7 @@ class FormAttribute extends Model
         'ref_price' => null,
         'place_of_origin' => null,
         'product_image' => null,
+        'product_details' => null,
     
     ];
 

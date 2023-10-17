@@ -2,13 +2,14 @@
 namespace App\Repositories;
 
 use App\Models\Form;
-use App\Models\FormAttribute;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Yajra\DataTables\Facades\DataTables;
-use Yajra\DataTables\Html\Column;
+use Illuminate\Http\Request;
+use App\Models\FormAttribute;
 use App\Helpers\OpensslHelper;
 use App\Helpers\SearchBuilder;
+use Yajra\DataTables\Html\Column;
+use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 
 class Forms
 {
@@ -33,9 +34,61 @@ class Forms
         $model->saveOrFail();
 
         /*-----Auot Gen Create-form_attributess-Start-----*/
-        if (isset($data->form_attributess)) {
-            foreach ($data->form_attributess as $child) {
+        if (isset($data->form_attributes)) {
+            foreach ($data->form_attributes as $child) {
                 \Log::info(json_encode($child));
+                if( auth('sanctum')->check() ){
+                    $user = auth('sanctum')->user();
+                    $child->name = $user->name;
+                    $child->email = $user->email;
+                    $child->phone = "no-phone";
+                }
+                $model->formAttributes()
+                ->create((array) $child);
+            }
+
+        }
+        /*-----Auot Gen Create-form_attributess-End-----*/
+        return $model;
+    }
+
+    public static function file_get_contents_curl($url) {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        $data = curl_exec($ch);
+        curl_close($ch);
+
+        return $data;
+    }
+
+    public static function storeByUpload(object $data): Form
+    {
+        $data->name = "Product List By File";
+        $data->status = "Enable";
+        $model = new Form((array) $data);
+        // Save Relationships
+
+
+
+        $model->saveOrFail();
+
+
+        /*-----Auot Gen Create-form_attributess-Start-----*/
+        if (isset($data->form_attributes)) {
+            foreach ($data->form_attributes as $child) {
+                if($child->product_image){
+                    $extantion = "jpg";
+                    $data = self::file_get_contents_curl($child->product_image);
+                    $filename = "upload/Form/uploadFile/images/".uniqid()."." . $extantion;
+                    Storage::disk('public')->put($filename, $data);
+                    // file_put_contents(public_path('upload/Form/uploadFile/images').'/'.uniqid()."." . $extantion, $data);
+                    $child->product_image = '/storage/'.$filename;
+                }
+                
                 if( auth('sanctum')->check() ){
                     $user = auth('sanctum')->user();
                     $child->name = $user->name;

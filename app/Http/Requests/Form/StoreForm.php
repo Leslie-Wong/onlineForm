@@ -58,12 +58,13 @@ class StoreForm extends FormRequest
         return [
                 'form_attributes' => ['array','min:1'],
                 ...$user,
-                'form_attributes.*.product_sku' => ['required', 'string'],
+                'form_attributes.*.product_sku' => ['nullable', 'string'],
                 'form_attributes.*.product_name' => ['required', 'string'],
-                'form_attributes.*.product_type' => ['required', 'string'],
+                'form_attributes.*.product_type' => ['nullable', 'string'],
                 'form_attributes.*.brand' => ['nullable', 'string'],
                 'form_attributes.*.ref_price' => ['nullable', 'string'],
                 'form_attributes.*.place_of_origin' => ['nullable', 'string'],
+                'form_attributes.*.product_details' => ['nullable', 'string'],
                 'form_attributes.*.product_image' => ['nullable', 'max:'.\Config::get('jetin.maxUpload', 10000)],
 
 

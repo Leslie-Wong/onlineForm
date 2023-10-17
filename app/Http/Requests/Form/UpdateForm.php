@@ -43,33 +43,21 @@ class UpdateForm extends FormRequest
             }
         }
         return [
-             
             'name' => ['sometimes', 'string'],
-                             
-            'status' => ['sometimes', 'string'],
-                                                             
+            'status' => ['sometimes', 'string'], 
             'form_attributes' => ['sometimes','array'],
- 
             'form_attributes.*.id' => ['sometimes', 'string'],
-                         
             'form_attributes.*.name' => ['sometimes', 'string'],
-                                                     
             'form_attributes.*.phone' => ['sometimes', 'string'],
-                                                     
             'form_attributes.*.email' => ['sometimes', 'email', 'string'],
-                                                     
             'form_attributes.*.product_sku' => ['nullable', 'string'],
-                                                     
             'form_attributes.*.product_name' => ['sometimes', 'string'],
-                                                     
             'form_attributes.*.product_type' => ['sometimes', 'string'],
-                                                     
             'form_attributes.*.brand' => ['nullable', 'string'],
-                                                     
             'form_attributes.*.ref_price' => ['nullable', 'string'],
-                                                     
+            'form_attributes.*.product_details' => ['nullable', 'string'],
             'form_attributes.*.place_of_origin' => ['nullable', 'string'],
-                                                                'product_image' => ['nullable', 'max:'.\Config::get('jetin.maxUpload', 10000)],
+            'product_image' => ['nullable', 'max:'.\Config::get('jetin.maxUpload', 10000)],
                                                                 
 
         ];
