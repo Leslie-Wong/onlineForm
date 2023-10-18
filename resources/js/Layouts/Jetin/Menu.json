@@ -1,0 +1,76 @@
+{
+    "dashboard": {
+        "route": "admin.dashboard",
+        "routePattern": "admin.dashboard",
+        "permissionName": "dashboard",
+        "title": "Dashboard",
+        "faIcon": "fas fa-tv",
+        "isTitle": false,
+        "isParent": false,
+        "ignorePerm": true,
+        "children": []
+    },
+    "permissions": {
+        "route": "admin.permissions.index",
+        "title": "Permissions",
+        "routePattern": "admin.permissions.*",
+        "faIcon": "far fa-clone",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "roles": {
+        "route": "admin.roles.index",
+        "title": "Roles",
+        "routePattern": "admin.roles.*",
+        "faIcon": "far fa-clone",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "users": {
+        "route": "admin.users.index",
+        "title": "Users",
+        "routePattern": "admin.users.*",
+        "faIcon": "far fa-clone",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "admins": {
+        "route": "admin.admins.index",
+        "title": "Admin",
+        "routePattern": "admin.admins.*",
+        "faIcon": "far fa-clone",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "languages": {
+        "route": "admin.languages.index",
+        "title": "Languages",
+        "routePattern": "admin.languages.*",
+        "faIcon": "far fa-clone",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "product-types": {
+        "route": "admin.product-types.index",
+        "title": "Product Types",
+        "routePattern": "admin.product-types.*",
+        "faIcon": "far fa-clone",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    },
+    "forms": {
+        "route": "admin.forms.index",
+        "title": "Forms",
+        "routePattern": "admin.forms.*",
+        "faIcon": "far fa-clone",
+        "isTitle": false,
+        "isParent": false,
+        "children": []
+    }
+}
