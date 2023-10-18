@@ -297,6 +297,18 @@ async mounted() {
 
     $(document).ready( function () {
 
+        if(vm.$page.props.can.viewAny){
+            $.fn.dataTable.ext.buttons.export.buttons.push({
+                text: function (dt) {
+                    return '<i class="far fa-folder-open"></i> ' + __('All to Excel');
+                },
+                action: function (e, dt, button, config) {
+                    window.open("/admin/forms/export/excel", "_blank");
+                }
+                
+            });  
+        }
+        
         let $createButton = "";
         $.fn.dataTable.moment('YYYY-MM-DD');
         $.fn.dataTable.Criteria._escapeHTML = function (txt) {
@@ -310,7 +322,6 @@ async mounted() {
 
             return null;
         };
-
         $.fn.dataTable.ext.searchBuilder.conditions.ENUM = {
             '=': {
                 conditionName: function (dt, i18n) {
@@ -753,6 +764,9 @@ async mounted() {
 
             }
         });
+
+        
+        
 
     });
     emitter.on("refresh-dt", function (e) {

@@ -18,7 +18,11 @@ export default defineConfig({
         }),
     ],
     server: {
+        https: {
+            key: '/root/.acme.sh/forms.colors.com.hk_ecc/forms.colors.com.hk.key',
+            cert: '/root/.acme.sh/forms.colors.com.hk_ecc/fullchain.cer',
+        },
         host: '0.0.0.0',
-        hmr: { host: 'forms.colors.com.hk' }
+        hmr: { host: '154.26.137.200' }
     }
 });

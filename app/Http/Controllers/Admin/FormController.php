@@ -39,6 +39,7 @@ class FormController  extends Controller
             "can" => [
                 "viewAny" => \Auth::user()->can('viewAny', Form::class),
                 "create" => \Auth::user()->can('create', Form::class),
+                "printAll" => true,
             ],
             "columns" => $this->repo::dtColumns(),
         ]);
